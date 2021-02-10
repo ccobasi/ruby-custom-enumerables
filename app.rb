@@ -1,5 +1,7 @@
-# rubocop:disable Style/For, Metrics/PerceivedComplexity
+# rubocop:disable Style/For
+# Metrics/PerceivedComplexity
 # rubocop:disable Metrics/CyclomaticComplexity
+# Metrics/ModuleLength
 module Enumerable
   def my_each
     array = self
