@@ -1,5 +1,4 @@
-# rubocop:disable Style/CaseEquality, Style/StringLiterals, Style/For
-
+# rubocop:disable Style/For
 module Enumerable
   def my_each
     array = self
@@ -74,7 +73,7 @@ module Enumerable
   end
 
   def my_none?
-  array = self
+    array = self
 
     if block_given?
       for number in array
@@ -112,7 +111,6 @@ module Enumerable
     else
       0
     end
-
   end
 
   def my_map(&block)
@@ -153,7 +151,6 @@ module Enumerable
 
   def multiply_els
     array = self
-    array.my_inject {|acc, number| acc * number}
+    array.my_inject { |acc, number| acc * number }
   end
-
 end
