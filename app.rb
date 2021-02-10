@@ -71,24 +71,22 @@ module Enumerable
     false
   end
 
-
-def my_none?
+  def my_none?
   array = self
 
+    if block_given?
+      for number in array
+        predicate = yield number
+        return false unless predicate
+      end
+    else
+      for number in array
+        return false unless number
+      end
+    end
 
-  if block_given?
-    for number in array
-      predicate = yield number
-      return false unless predicate
-    end
-  else
-    for number in array
-      return false unless number
-    end
+    true
   end
-
-  true
-end
 
   def my_count(number = nil)
     array = self
