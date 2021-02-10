@@ -1,3 +1,5 @@
+# rubocop:disable Style/CaseEquality, Style/StringLiterals, Style/For
+
 module Enumerable
   def my_each
     array = self
