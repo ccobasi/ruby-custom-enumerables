@@ -90,30 +90,70 @@ def my_none?
   true
 end
 
-  def my_count
+  def my_count(number = nil)
     array = self
-    array_length = 0
-    
-  
-    for item in array
-      array_length += 1
-      return array_length
+
+    if block_given?
+      coincidences = 0
+      for item in array
+        coincidences += 1 if yield item
+      end
+      return coincidences
     end
 
-  elsif block_given?
-    for item in array.any?
-      array_length += 1
+    return array.length if number.nil?
+
+    if number.instance_of?(Integer) || number.instance_of?(Float)
+      coincidences = 0
+      for item in array
+        coincidences += 1 if item == number
+      end
+      coincidences
+    else
+      0
     end
-
-
 
   end
 
+  def my_map(&block)
+    array = self
+
+    return array unless block_given?
+
+    new_array = []
+
+    for number in array
+      new_number = block.call number
+      new_array.push new_number
+    end
+
+    new_array
+  end
+
+  def my_inject(initial_value = nil)
+    array = self
+
+    return array unless block_given?
+    return array if array.empty?
+
+    unless initial_value.nil?
+      acc = initial_value
+      for number in array
+        acc = yield acc, number
+      end
+      acc
+    end
+
+    acc = array[0]
+    (array.length - 1).times do |i|
+      acc = yield acc, array[i + 1]
+    end
+    acc
+  end
+
+  def multiply_els
+    array = self
+    array.my_inject {|acc, number| acc * number}
+  end
 
 end
-
-
-p [1,5,3,7,6,8,9].count { |number| number}
-
-p [1,5,3,7,6,8,9].my_count { |number| number}
-
