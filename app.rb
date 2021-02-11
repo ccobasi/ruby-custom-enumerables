@@ -149,7 +149,7 @@ module Enumerable
   def my_inject(initial_value = nil)
     array = self
 
-    raise LocalJumpError, "No block or initial acc given" if initial_value.nil? && !block_given?
+    raise LocalJumpError, 'No block or initial acc given' if initial_value.nil? && !block_given?
     return array unless block_given?
     return array if array.empty?
 
@@ -173,12 +173,6 @@ module Enumerable
     array.my_inject { |acc, number| acc * number }
   end
 end
-
-
-
-
-p [1, 2].my_inject
-
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/ModuleLength
