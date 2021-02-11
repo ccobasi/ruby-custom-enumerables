@@ -2,6 +2,7 @@
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/ModuleLength
 # rubocop:disable Style/For
+# rubocop:disable Layout/EndOfLine
 module Enumerable
   def my_each
     array = self
@@ -162,3 +163,4 @@ end
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/ModuleLength
 # rubocop:enable Style/For
+# rubocop:enable Layout/EndOfLine
