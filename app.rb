@@ -16,7 +16,7 @@ module Enumerable
   end
 
   def my_each_with_index
-    array = self
+    array = self.to_a
 
     return to_enum unless block_given?
 
@@ -41,13 +41,18 @@ module Enumerable
 
     new_array
   end
- 
-  def my_all?
+
+  def my_all?(pattern = nil)
     array = self
 
     if block_given?
       for number in array
         predicate = yield number
+        return false unless predicate
+      end
+    elsif !pattern.nil?
+      for number in array
+        predicate = number == pattern
         return false unless predicate
       end
     else
@@ -157,6 +162,12 @@ module Enumerable
     array.my_inject { |acc, number| acc * number }
   end
 end
+
+
+
+p (1...3).all?(1)
+p [1, 2, 3].my_all?(1)
+
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/ModuleLength
