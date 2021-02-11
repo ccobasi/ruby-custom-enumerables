@@ -16,7 +16,7 @@ module Enumerable
   end
 
   def my_each_with_index
-    array = self.to_a
+    array = to_a
 
     return to_enum unless block_given?
 
