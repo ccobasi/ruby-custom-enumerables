@@ -52,9 +52,9 @@ module Enumerable
       for number in self
         return false unless number.is_a? pattern
       end
-    elsif pattern.nil?
+    elsif !pattern.nil?
       for number in self
-        predicate = number == pattern
+        predicate = pattern.is_a?(Regexp) ? number.match?(pattern) : number == pattern
         return false unless predicate
       end
     else
@@ -78,7 +78,7 @@ module Enumerable
       end
     elsif !pattern.nil?
       for number in self
-        predicate = number == pattern
+        predicate = pattern.is_a?(Regexp) ? number.match?(pattern) : number == pattern
         return true if predicate
       end
     else
@@ -99,7 +99,7 @@ module Enumerable
       end
     elsif !pattern.nil?
       for number in array
-        predicate = number == pattern
+        predicate = pattern.is_a?(Regexp) ? number.match?(pattern) : number == pattern
         return false if predicate
       end
     else
@@ -122,7 +122,7 @@ module Enumerable
       return coincidences
     end
 
-    return array.length if number.nil?
+    return array.size if number.nil?
 
     if number.instance_of?(Integer) || number.instance_of?(Float)
       coincidences = 0
@@ -175,11 +175,6 @@ module Enumerable
   def multiply_els
     array = self
     array.my_inject { |acc, number| acc * number }
-  end
-
-  def number?(string)
-    true if Float(string)
-    false
   end
 end
 
