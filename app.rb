@@ -6,7 +6,7 @@ module Enumerable
   def my_each
     array = self
 
-    return array unless block_given?
+    return to_enum unless block_given?
 
     for i in array do
       yield i
@@ -18,7 +18,7 @@ module Enumerable
   def my_each_with_index
     array = self
 
-    return array unless block_given?
+    return to_enum unless block_given?
 
     array.length.times do |i|
       yield array[i], i
@@ -30,7 +30,7 @@ module Enumerable
   def my_select
     array = self
 
-    return array unless block_given?
+    return to_enum unless block_given?
 
     new_array = []
 
@@ -41,7 +41,7 @@ module Enumerable
 
     new_array
   end
-
+ 
   def my_all?
     array = self
 
