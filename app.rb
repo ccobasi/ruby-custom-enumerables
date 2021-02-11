@@ -64,13 +64,18 @@ module Enumerable
     true
   end
 
-  def my_any?
+  def my_any?(pattern = nil)
     array = self
 
     if block_given?
       for number in array
         result = yield number
         return true if result
+      end
+    elsif !pattern.nil?
+      for number in array
+        predicate = number == pattern
+        return true if predicate
       end
     else
       for number in array
@@ -80,12 +85,17 @@ module Enumerable
     false
   end
 
-  def my_none?
+  def my_none?(pattern = nil)
     array = self
 
     if block_given?
       for number in array
         predicate = yield number
+        return false unless predicate
+      end
+    elsif !pattern.nil?
+      for number in array
+        predicate = number == pattern
         return false unless predicate
       end
     else
@@ -124,7 +134,7 @@ module Enumerable
   def my_map(&block)
     array = self
 
-    return array unless block_given?
+    return to_enum unless block_given?
 
     new_array = []
 
@@ -139,6 +149,7 @@ module Enumerable
   def my_inject(initial_value = nil)
     array = self
 
+    raise LocalJumpError, "No block or initial acc given" if initial_value.nil? && !block_given?
     return array unless block_given?
     return array if array.empty?
 
@@ -165,8 +176,8 @@ end
 
 
 
-p (1...3).all?(1)
-p [1, 2, 3].my_all?(1)
+
+p [1, 2].my_inject
 
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/CyclomaticComplexity
