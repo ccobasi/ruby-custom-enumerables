@@ -157,3 +157,8 @@ module Enumerable
     array.my_inject { |acc, number| acc * number }
   end
 end
+
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/ModuleLength
+# rubocop:enable Style/For
