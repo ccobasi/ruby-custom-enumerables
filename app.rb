@@ -43,20 +43,22 @@ module Enumerable
   end
 
   def my_all?(pattern = nil)
-    array = self
-
     if block_given?
-      for number in array
+      for number in self
         predicate = yield number
         return false unless predicate
       end
-    elsif !pattern.nil?
-      for number in array
+    elsif pattern.is_a? Class
+      for number in self
+        return false unless number.is_a? pattern
+      end
+    elsif pattern.nil?
+      for number in self
         predicate = number == pattern
         return false unless predicate
       end
     else
-      for number in array
+      for number in self
         return false unless number
       end
     end
@@ -65,20 +67,22 @@ module Enumerable
   end
 
   def my_any?(pattern = nil)
-    array = self
-
     if block_given?
-      for number in array
+      for number in self
         result = yield number
         return true if result
       end
+    elsif pattern.is_a? Class
+      for number in self
+        return true if number.is_a? pattern
+      end
     elsif !pattern.nil?
-      for number in array
+      for number in self
         predicate = number == pattern
         return true if predicate
       end
     else
-      for number in array
+      for number in self
         return true if number
       end
     end
@@ -91,16 +95,16 @@ module Enumerable
     if block_given?
       for number in array
         predicate = yield number
-        return false unless predicate
+        return false if predicate
       end
     elsif !pattern.nil?
       for number in array
         predicate = number == pattern
-        return false unless predicate
+        return false if predicate
       end
     else
       for number in array
-        return false unless number
+        return false if number
       end
     end
 
@@ -172,7 +176,17 @@ module Enumerable
     array = self
     array.my_inject { |acc, number| acc * number }
   end
+
+  def number?(string)
+    true if Float(string)
+    false
+  end
 end
+
+def multiply_els(array)
+  array.my_inject { |acc, number| acc * number }
+end
+
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/ModuleLength
