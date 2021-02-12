@@ -135,39 +135,74 @@ module Enumerable
     end
   end
 
-  def my_map(&block)
+  def my_map(proc = nil)
     array = self
 
     return to_enum unless block_given?
 
     new_array = []
 
+    if proc.is_a? Proc
+      for number in array
+        new_number = proc.call number
+        new_array.push new_number
+      end
+      return new_array
+    end
+
     for number in array
-      new_number = block.call number
+      new_number = yield number
       new_array.push new_number
     end
 
     new_array
   end
 
-  def my_inject(initial_value = nil)
+  def my_inject(initial_value = nil, symbol = nil)
     array = self
+    array = to_a if is_a? Range
 
     raise LocalJumpError, 'No block or initial acc given' if initial_value.nil? && !block_given?
-    return array unless block_given?
-    return array if array.empty?
+    return self if array.empty?
 
     unless initial_value.nil?
+      # Only Symbol as an argument
+      return get_inject_symbol_result(array, initial_value) if initial_value.is_a? Symbol
+
+      # initial_value and symbol as arguments
+      return get_inject_ivalue_symbol array, initial_value, symbol if symbol.is_a? Symbol
+
+      # Only initial_value
       acc = initial_value
       for number in array
         acc = yield acc, number
       end
-      acc
+
+      return acc
     end
 
+    return self unless block_given?
+
+    # Only block given
     acc = array[0]
     (array.length - 1).times do |i|
       acc = yield acc, array[i + 1]
+    end
+    acc
+  end
+
+  def get_inject_symbol_result(array, symbol)
+    acc = array[0]
+    (array.length - 1).times do |i|
+      acc = acc.send symbol, array[i + 1]
+    end
+    acc
+  end
+
+  def get_inject_ivalue_symbol(array, initial_value, symbol)
+    acc = initial_value
+    for number in array
+      acc = acc.send symbol, number
     end
     acc
   end
@@ -181,6 +216,11 @@ end
 def multiply_els(array)
   array.my_inject { |acc, number| acc * number }
 end
+
+range = Range.new(1, 5)
+
+p range.inject(20, :*)
+p range.my_inject(20, :*)
 
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/CyclomaticComplexity
