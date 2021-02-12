@@ -16,15 +16,15 @@ module Enumerable
   end
 
   def my_each_with_index
-    array = to_a
-
     return to_enum unless block_given?
 
-    array.length.times do |i|
-      yield array[i], i
+    i = 0
+    for element in self
+      yield element, i
+      i += 1
     end
 
-    array
+    self
   end
 
   def my_select
