@@ -32,11 +32,40 @@ describe 'Enumerables testing' do
         end
 
         it 'does not mutate the original array' do
-        array.my_each_with_index { |num| num + 1 }
+        array.my_each_with_index(&predicate_block)
         expect(array).to eq(array_clone)
         end
     end
     
+    describe 'RSPEC# - Method: #my_select' do
+        it 'does not mutate the original array' do
+            array.my_select(&predicate_block)
+            expect(array).to be_eql cloned_array
+        end
+
+   
+        it 'does return an Enumerator' do
+            expect(array.my_select).to be_an(Enumerator)
+        end
+
+        it 'does filter the same elements' do
+            result = array.select(&predicate_block)
+            result2 = array.my_select(&predicate_block)
+            expect(result).to be_eql result2
+        end
+
+        it 'does filter the same elements when given range' do
+            result = range.select(&predicate_block)
+            result2 = range.my_select(&predicate_block)
+            expect(result).to be_eql result2
+        end
+
+        it 'does return an Enumerator when given range' do
+            expect(range.my_select).to be_an(Enumerator)
+        end
+    end
+ 
+
     
 
     
