@@ -64,6 +64,40 @@ describe 'Enumerables testing' do
             expect(range.my_select).to be_an(Enumerator)
         end
     end
+
+    describe '#my_all' do
+        context 'No block is given' do
+            it 'does return true' do
+                expect(array.my_all?).to be true
+            end
+        end
+
+        context 'When a truthy array is given without a block' do
+            it 'does return false' do
+                expect(array.all?).to be_eql array.my_all?
+            end
+        end
+
+        context 'When a falsy array is given without a block' do
+        let(:falsy_array) { [false, nil] }
+
+            it 'does return true' do
+                expect(falsy_array.all?).to be_eql falsy_array.my_all?
+            end
+        end
+
+        context 'When a class is given' do
+         let(:word_array) { %w[mini portable table] }
+
+            it 'does return true' do
+                expect(word_array.all?(String)).to be_eql word_array.my_all? String
+            end
+
+            it 'does return false' do
+                expect(word_array.all?(Integer)).to be_eql word_array.my_all? Integer
+            end
+        end
+    end
  
 
     
