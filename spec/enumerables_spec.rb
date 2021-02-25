@@ -7,6 +7,7 @@ describe 'Enumerables testing' do
     let(:array) { [1, 2, 3] }
     let(:array_clone) { array.clone }
     let(:predicate_block) { proc { |number| number > 1 } }
+    let(:word_array) { %w[mini portable table] }
 
     describe 'RSPEC# - Method: #my_each' do
         it 'returns an Enumerator if no block is given' do
@@ -99,7 +100,37 @@ describe 'Enumerables testing' do
         end
     end
  
+    describe '#my_any' do
+        context 'No block is given' do
+            it 'does return true' do
+                expect(array.my_any?).to be true
+            end
+        end
 
+        context 'When a truthy array is given without a block' do
+            it 'does return true' do
+                expect(array.my_any?).to be_eql array.any?
+            end
+        end
+
+        context 'When a falsy array is given without a block' do
+        let(:falsy_array) { [false, nil] }
+
+            it 'does return false' do
+                expect(falsy_array.any?).to be_eql falsy_array.my_any?
+            end
+        end
+
+        context 'When a class is given' do
+            it 'does return true' do
+                expect(word_array.any?(String)).to be_eql word_array.my_any? String
+            end
+
+            it 'does return false' do
+                expect(word_array.any?(Integer)).to be_eql word_array.my_any? Integer
+            end
+        end
+    end
     
 
     
