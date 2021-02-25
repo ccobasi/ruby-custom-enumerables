@@ -222,4 +222,47 @@ describe 'Enumerables testing' do
         end
 
     end
+
+    describe 'RSPEC# - Method: #my_inject' do
+    let(:biggest_number) { proc { |acc, number| acc > number ? acc : number } }
+
+        context 'When no block or argument is given' do
+        it 'does raise a "LocalJumpError" error' do
+            expect { array.my_inject }.to raise_error(LocalJumpError)
+        end
+        end
+
+        it 'does return the biggest number' do
+        expect(array.my_inject(&biggest_number)).to eq array.inject(&biggest_number)
+        end
+
+        it 'does return a new array' do
+        cloned_array = array.clone
+        array.my_inject { |acc, number| acc + number }
+        expect(array).to be_eql cloned_array
+        end
+
+        context 'When a block is given' do
+        let(:add_block) { proc { |acc, number| acc + number } }
+        context 'with an initial value' do
+            it 'does return return an array where the initial value and blocked is used' do
+            expect(range.my_inject(10, &add_block)).to eq range.inject(10, &add_block)
+            end
+        end
+
+        context 'without an initial value' do
+            it 'combines all elements of enum by applying a binary operation, specified by a block' do
+            expect(array.my_inject(&add_block)).to eq array.inject(&add_block)
+            end
+        end
+        end
+
+        context 'When a symbol is given' do
+        context 'with an initial value' do
+            it 'does return an array where the elements fulfill the &block condition' do
+            expect(array.my_inject(10, :+)).to eq array.inject(10, :+)
+            end
+        end
+        end
+    end
 end
