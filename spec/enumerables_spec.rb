@@ -8,6 +8,7 @@ describe 'Enumerables testing' do
     let(:array_clone) { array.clone }
     let(:predicate_block) { proc { |number| number > 1 } }
     let(:word_array) { %w[mini portable table] }
+    let(:falsy_array) { [false, nil] }
 
     describe 'RSPEC# - Method: #my_each' do
         it 'returns an Enumerator if no block is given' do
@@ -80,16 +81,12 @@ describe 'Enumerables testing' do
         end
 
         context 'When a falsy array is given without a block' do
-        let(:falsy_array) { [false, nil] }
-
             it 'does return true' do
                 expect(falsy_array.all?).to be_eql falsy_array.my_all?
             end
         end
 
         context 'When a class is given' do
-         let(:word_array) { %w[mini portable table] }
-
             it 'does return true' do
                 expect(word_array.all?(String)).to be_eql word_array.my_all? String
             end
@@ -114,7 +111,6 @@ describe 'Enumerables testing' do
         end
 
         context 'When a falsy array is given without a block' do
-        let(:falsy_array) { [false, nil] }
 
             it 'does return false' do
                 expect(falsy_array.any?).to be_eql falsy_array.my_any?
@@ -132,7 +128,42 @@ describe 'Enumerables testing' do
         end
     end
     
+    describe '#my_none' do
+        context 'No block is given' do
+            it 'does return false' do
+                expect(array.my_none?).to be false
+            end
+        end
 
+        context 'When a truthy array is given without a block' do
+            it 'does return false' do
+                expect(array.none?).to be_eql array.my_none?
+            end
+        end
+
+        context 'When a falsy array is given without a block' do
+
+            it 'does return true' do
+                expect(falsy_array.none?).to be_eql falsy_array.my_none?
+            end
+        end
+
+        context 'When a class is given' do
+
+            it 'does return true' do
+                expect(array.my_none?(String)).to be array.my_none?(String)
+            end
+
+            it 'does returns true' do
+                expect(array.my_none?(Numeric)).to be array.my_none?(Numeric)
+            end
+
+            it 'does return false' do
+                array.push 'word goes here'
+                expect(array.my_none?(String)).to be array.my_none?(String)
+            end
+        end
+    end
     
 
 end
