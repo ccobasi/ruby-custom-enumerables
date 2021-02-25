@@ -67,7 +67,7 @@ describe 'Enumerables testing' do
         end
     end
 
-    describe '#my_all' do
+    describe 'RSPEC# - Method: #my_all' do
         context 'No block is given' do
             it 'does return true' do
                 expect(array.my_all?).to be true
@@ -97,7 +97,7 @@ describe 'Enumerables testing' do
         end
     end
  
-    describe '#my_any' do
+    describe 'RSPEC# - Method: #my_any' do
         context 'No block is given' do
             it 'does return true' do
                 expect(array.my_any?).to be true
@@ -128,7 +128,7 @@ describe 'Enumerables testing' do
         end
     end
     
-    describe '#my_none' do
+    describe 'RSPEC# - Method: #my_none' do
         context 'No block is given' do
             it 'does return false' do
                 expect(array.my_none?).to be false
@@ -165,5 +165,30 @@ describe 'Enumerables testing' do
         end
     end
     
+    describe 'RSPEC# - Method: #my_count' do
+    context 'When an array is given' do
+      it 'does count the elements' do
+        expect(array.count).to be array.my_count
+      end
+    end
+
+    context 'When a range is given' do
+      it 'does count the elements' do
+        expect(range.count).to be range.my_count
+      end
+    end
+
+    context 'When a Numeric argument is given' do
+      it 'does return true' do
+        expect(array.count(1)).to be array.my_count 1
+      end
+    end
+
+    context 'When a block is given' do
+      it 'does return true' do
+        expect(array.count(&predicate_block)).to be array.my_count(&predicate_block)
+      end
+    end
+  end
 
 end
