@@ -166,29 +166,60 @@ describe 'Enumerables testing' do
     end
     
     describe 'RSPEC# - Method: #my_count' do
-    context 'When an array is given' do
-      it 'does count the elements' do
-        expect(array.count).to be array.my_count
-      end
+        context 'When an array is given' do
+            it 'does count the elements' do
+                expect(array.count).to be array.my_count
+            end
+        end
+
+        context 'When a range is given' do
+            it 'does count the elements' do
+                expect(range.count).to be range.my_count
+            end
+        end
+
+        context 'When a Numeric argument is given' do
+            it 'does return true' do
+                expect(array.count(1)).to be array.my_count 1
+            end
+        end
+
+        context 'When a block is given' do
+            it 'does return true' do
+                expect(array.count(&predicate_block)).to be array.my_count(&predicate_block)
+            end
+        end
     end
 
-    context 'When a range is given' do
-      it 'does count the elements' do
-        expect(range.count).to be range.my_count
-      end
-    end
+    describe 'RSPEC# - Method: #my_map' do
+        context 'When an array is given' do
+            it 'does return a new array with the elements that meet the &block condition' do
+                expect(array.my_map(&predicate_block)).to eq array.map(&predicate_block)
+            end
+        end
 
-    context 'When a Numeric argument is given' do
-      it 'does return true' do
-        expect(array.count(1)).to be array.my_count 1
-      end
-    end
+        context 'When a range is given' do
+            it 'does return a new array with the elements that meet the &block condition' do
+                expect(range.my_map(&predicate_block)).to eq range.map(&predicate_block)
+            end
+        end
 
-    context 'When a block is given' do
-      it 'does return true' do
-        expect(array.count(&predicate_block)).to be array.my_count(&predicate_block)
-      end
-    end
-  end
+        context 'When no block is given' do
+            it 'does return an Enumerator' do
+                expect(array.my_map).to be_an(Enumerator)
+            end
+        end
 
+        context 'When a block and a &block are given' do
+            it 'does execute only the proc' do
+                expect(array.my_map(predicate_block) { |num| num > 1 }).to eq array.map(&predicate_block)
+            end
+
+            it 'does return a new array' do
+                array.my_map(&predicate_block)
+                expect(array).to be_eql cloned_array
+            end
+        end
+
+    end
 end
