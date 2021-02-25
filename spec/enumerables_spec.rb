@@ -26,6 +26,19 @@ describe 'Enumerables testing' do
         end
     end
 
+    describe 'RSPEC# - Method: #my_each_with_index' do
+        it 'returns an enumerator if no block is given' do
+        expect(array.my_each_with_index).to be_an(Enumerator)
+        end
+
+        it 'does not mutate the original array' do
+        array.my_each_with_index { |num| num + 1 }
+        expect(array).to eq(array_clone)
+        end
+    end
+    
+    
+
     
 
 end
