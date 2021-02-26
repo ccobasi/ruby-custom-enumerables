@@ -6,7 +6,7 @@ describe 'Enumerables testing' do
   let(:range) { (1..3) }
   let(:array) { [1, 2, 3] }
   let(:array_clone) { array.clone }
-  let(:predicate_block) { proc { |number| number > 1 } }
+  let(:predicate_block) { proc { |x| x + 2 } }
   let(:word_array) { %w[mini portable table] }
   let(:falsy_array) { [false, nil] }
 
@@ -206,13 +206,13 @@ describe 'Enumerables testing' do
       end
     end
 
-    context 'When a block and a &block are given' do
+    context 'When a block are given' do
       it 'does execute only the proc' do
-        expect(array.my_map(&predicate_block).to(eq array.map(&predicate_block)))
+        expect(array.my_map(&predicate_block)).to eq array.map(&predicate_block)
       end
       it 'does return a new array' do
-        array.my_map(&predicate_block)
-        expect(array).to be_eql cloned_array
+        array.my_map { |num| num + 1 }
+        expect(array).to eq(array_clone)
       end
     end
   end
