@@ -41,8 +41,8 @@ describe 'Enumerables testing' do
 
   describe 'RSPEC# - Method: #my_select' do
     it 'does not mutate the original array' do
-      array.my_select(&predicate_block)
-      expect(array).to be_eql cloned_array
+      array.my_select { |num| num + 1 }
+      expect(array).to eq(array_clone)
     end
 
     it 'does return an Enumerator' do
@@ -208,9 +208,8 @@ describe 'Enumerables testing' do
 
     context 'When a block and a &block are given' do
       it 'does execute only the proc' do
-        expect(array.my_map(predicate_block) { |num| num > 1 }).to eq array.map(&predicate_block)
+        expect(array.my_map(&predicate_block).to(eq array.map(&predicate_block)))
       end
-
       it 'does return a new array' do
         array.my_map(&predicate_block)
         expect(array).to be_eql cloned_array
