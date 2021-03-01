@@ -206,7 +206,7 @@ describe 'Enumerables testing' do
       end
     end
 
-    context 'When a block are given' do
+    context 'When a block is given' do
       it 'does execute only the proc' do
         expect(array.my_map(&predicate_block)).to eq array.map(&predicate_block)
       end
